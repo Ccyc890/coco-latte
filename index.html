@@ -197,7 +197,7 @@
       left: 0;
       right: 0;
       transform: none;
-      padding: 0.9rem 5vw;
+      padding: 1.6rem 5vw;
     }
 
     /* Underline-on-hover animation for the hero nav links */
@@ -619,16 +619,17 @@
     .scroll-word {
       background: var(--cream);
       color: var(--black);
-      height: 220vh;
+      height: 200vh;
       /* clip (not hidden): doesn't create a scroll container, so the
          sticky giant word keeps sticking for the whole 220vh */
       overflow: clip;
     }
 
     .scroll-word-eyebrow {
+      position: absolute;
+      top: 10vh;
+      right: 8vw;
       max-width: 260px;
-      margin: 0 auto clamp(1.5rem, 4vw, 3rem);
-      padding-right: 8vw;
       display: block;
       text-align: right;
       font-family: 'Inter', sans-serif;
@@ -1038,15 +1039,15 @@
 
     /* ---------- Location ---------- */
     .location-section {
-      background: var(--charcoal);
-      color: var(--cream);
+      background: var(--cream);
+      color: var(--black);
       padding: clamp(var(--space-xl), 8vw, var(--space-2xl)) 5vw;
     }
 
     .location-section h2,
     .location-section h3,
     .location-section h4 {
-      color: var(--cream);
+      color: var(--black);
     }
 
     .location-grid {
@@ -1057,7 +1058,7 @@
     }
 
     .location-info .label {
-      color: var(--gold-soft);
+      color: var(--gold-dark);
       margin-bottom: var(--space-sm);
     }
 
@@ -1069,7 +1070,7 @@
     }
 
     .location-info .lead {
-      color: rgba(245, 241, 234, 0.65);
+      color: rgba(18, 15, 14, 0.65);
       margin-bottom: var(--space-sm);
       max-width: 65ch;
       font-size: var(--text-base-fluid);
@@ -1096,14 +1097,14 @@
       font-weight: 400;
       letter-spacing: 0.24em;
       text-transform: uppercase;
-      color: var(--gold-soft);
+      color: var(--gold-dark);
       min-width: 90px;
     }
 
     .meta-row a,
     .meta-row span:not(.meta-label) {
       font-weight: 400;
-      color: rgba(245, 241, 234, 0.85);
+      color: rgba(18, 15, 14, 0.85);
     }
 
     .meta-row a {
