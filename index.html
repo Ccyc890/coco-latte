@@ -627,7 +627,7 @@
 
     .scroll-word-eyebrow {
       position: absolute;
-      top: 8vh;
+      top: clamp(7rem, 18vh, 10rem);
       right: 8vw;
       z-index: 2;
       max-width: 260px;
@@ -647,9 +647,16 @@
       margin-bottom: 0.75rem;
     }
 
-    .scroll-word-giant {
+    .scroll-word-pin {
       position: sticky;
-      top: auto;
+      top: 0;
+      height: 100svh;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .scroll-word-giant {
+      position: relative;
       bottom: -0.12em;
       transform: translateY(-50%);
       font-family: 'Instrument Serif', serif;
@@ -1415,8 +1422,9 @@
     </section>
 
     <section class="scroll-word" id="scrollWord" aria-label="Coco Latte">
-      <p class="scroll-word-eyebrow"><span class="glyph" aria-hidden="true">✳</span><span data-i18n="scrollword.eyebrow">Café de especialidad, repostería casera y brunch de tostadas.</span></p>
-      <div class="scroll-word-giant" id="giantWord">COCO&nbsp;LATTE</div>
+      
+      <div class="scroll-word-pin"><p class="scroll-word-eyebrow"><span class="glyph" aria-hidden="true">✳</span><span data-i18n="scrollword.eyebrow">Café de especialidad, repostería casera y brunch de tostadas.</span></p><div class="scroll-word-giant" id="giantWord">COCO&nbsp;LATTE</div>
+    </div>
     </section>
 
     <section class="menu-section" id="menu" aria-labelledby="menu-title">
