@@ -619,7 +619,7 @@
     .scroll-word {
       background: var(--cream);
       color: var(--black);
-      height: 200vh;
+      height: 280vh;
       /* clip (not hidden): doesn't create a scroll container, so the
          sticky giant word keeps sticking for the whole 220vh */
       overflow: clip;
@@ -649,12 +649,13 @@
 
     .scroll-word-giant {
       position: sticky;
-      top: 50vh;
+      top: auto;
+      bottom: -0.12em;
       transform: translateY(-50%);
       font-family: 'Instrument Serif', serif;
       font-weight: 400;
-      font-size: min(40vh, 22vw);
-      line-height: 0.9;
+      font-size: 55vw;
+      line-height: 0.75;
       white-space: nowrap;
       letter-spacing: -0.02em;
       color: var(--black);
@@ -2119,7 +2120,7 @@
         const vh = window.innerHeight;
         const p = Math.min(Math.max(-rect.top / Math.max(rect.height - vh, 1), 0), 1);
         const extra = gw.scrollWidth - window.innerWidth;
-        gw.style.transform = 'translateX(' + (-p * Math.max(extra, 0)).toFixed(1) + 'px) translateY(-50%)';
+        gw.style.transform = 'translateX(' + (-p * Math.max(extra, 0)).toFixed(1) + 'px)';
       }
     }
 
