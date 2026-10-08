@@ -390,16 +390,11 @@
       z-index: 1004;
     }
 
-    #nav:has(.nav-hamburger.active) .nav-logo,
-    #nav:has(.nav-hamburger.active) .nav-contact-mobile {
-      opacity: 0;
-      pointer-events: none;
+    #nav:has(.nav-hamburger.active) {
+      color: var(--cream) !important;
     }
 
     .nav-hamburger.active {
-      position: fixed;
-      top: var(--space-sm);
-      right: 5vw;
       color: var(--cream);
     }
 
@@ -434,7 +429,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      padding: 5vw;
+      padding: 0 2.3vw;
       transform: translateY(-100%);
       visibility: hidden;
       pointer-events: none;
@@ -452,14 +447,15 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.25rem;
+      gap: 0;
+      margin-top: 4vh;
     }
 
     .nav-overlay-nav a {
       font-family: 'Instrument Serif', Georgia, serif;
       font-weight: 400;
-      font-size: clamp(2.5rem, 11vw, 8rem);
-      line-height: 1.05;
+      font-size: clamp(2.75rem, 12.3vw, 9rem);
+      line-height: 1.04;
       text-transform: lowercase;
       color: var(--cream);
       opacity: 1;
@@ -472,14 +468,17 @@
 
     .nav-overlay-lang {
       position: absolute;
-      bottom: 5vw;
-      left: 5vw;
+      bottom: 2.3vw;
+      left: 2.3vw;
       display: flex;
-      gap: 1.25rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
       font-family: 'Inter', sans-serif;
-      font-size: var(--text-sm-fluid);
+      font-size: clamp(1.5rem, 4.7vw, 3rem);
       font-weight: 400;
-      letter-spacing: 0.02em;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
     }
 
     .nav-overlay-lang button {
@@ -488,7 +487,7 @@
       color: var(--cream);
       cursor: pointer;
       padding: 0;
-      opacity: 0.5;
+      opacity: 0.45;
       transition: opacity 0.3s;
       font-family: inherit;
       font-size: inherit;
