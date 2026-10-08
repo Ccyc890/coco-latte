@@ -650,6 +650,7 @@
     .scroll-word-pin {
       position: sticky;
       top: 0;
+      height: 100vh;
       height: 100svh;
       display: flex;
       align-items: flex-end;
@@ -2126,7 +2127,7 @@
       if (sw && gw) {
         const rect = sw.getBoundingClientRect();
         const vh = window.innerHeight;
-        const p = Math.min(Math.max(-rect.top / Math.max(rect.height - vh, 1), 0), 1);
+        const p = Math.min(Math.max(-rect.top / Math.max((rect.height - vh) * 0.85, 1), 0), 1);
         const extra = gw.scrollWidth - window.innerWidth;
         gw.style.transform = 'translateX(' + (-p * Math.max(extra, 0)).toFixed(1) + 'px)';
       }
