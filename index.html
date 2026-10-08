@@ -285,11 +285,6 @@
       color: inherit;
     }
 
-    /* Drawer extras (contacto + lang) only visible inside the mobile drawer */
-    .nav-drawer-extras {
-      display: none;
-    }
-
     .nav-right {
       display: contents;
     }
@@ -369,21 +364,151 @@
     .nav-hamburger {
       display: none;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       gap: 5px;
+      width: 44px;
+      height: 44px;
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0.5rem;
+      padding: 0;
       position: relative;
       z-index: 1003;
     }
 
     .nav-hamburger span {
       display: block;
-      width: 24px;
+      width: 28px;
       height: 1.5px;
       background: currentColor;
       transition: transform 0.35s var(--ease), opacity 0.25s;
+      transform-origin: center;
+    }
+
+    #nav:has(.nav-hamburger.active) {
+      z-index: 1004;
+    }
+
+    #nav:has(.nav-hamburger.active) .nav-logo,
+    #nav:has(.nav-hamburger.active) .nav-contact-mobile {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .nav-hamburger.active {
+      position: fixed;
+      top: var(--space-sm);
+      right: 5vw;
+      color: var(--cream);
+    }
+
+    .nav-hamburger.active span:nth-child(1) {
+      transform: translateY(3.25px) rotate(45deg);
+    }
+
+    .nav-hamburger.active span:nth-child(2) {
+      transform: translateY(-3.25px) rotate(-45deg);
+    }
+
+    .nav-contact-mobile {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(0.8125rem, 0.85vw + 0.55rem, 1rem);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      text-transform: lowercase;
+      color: inherit;
+      z-index: 1003;
+    }
+
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      color: var(--cream);
+      z-index: 1002;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 5vw;
+      transform: translateY(-100%);
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform 0.55s var(--ease), visibility 0s linear 0.55s;
+    }
+
+    .nav-overlay.open {
+      transform: translateY(0);
+      visibility: visible;
+      pointer-events: auto;
+      transition: transform 0.55s var(--ease), visibility 0s linear 0s;
+    }
+
+    .nav-overlay-nav {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    .nav-overlay-nav a {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.5rem, 11vw, 8rem);
+      line-height: 1.05;
+      text-transform: lowercase;
+      color: var(--cream);
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    .nav-overlay-nav a:hover {
+      opacity: 0.6;
+    }
+
+    .nav-overlay-lang {
+      position: absolute;
+      bottom: 5vw;
+      left: 5vw;
+      display: flex;
+      gap: 1.25rem;
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-sm-fluid);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-overlay-lang button {
+      background: none;
+      border: none;
+      color: var(--cream);
+      cursor: pointer;
+      padding: 0;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+    }
+
+    .nav-overlay-lang button[aria-pressed="true"] {
+      opacity: 1;
+    }
+
+    .nav-overlay-lang button:hover {
+      opacity: 1;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    .site-nav.menu-open {
+      color: var(--cream) !important;
     }
 
     /* ---------- Hero ---------- */
@@ -1196,79 +1321,49 @@
 
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 1024px) {
+      .site-nav--hero {
+        top: 0;
+        transform: none;
+      }
+
       .site-nav--hero,
       .site-nav--fixed {
-        padding: var(--space-xs) 5vw;
+        padding: var(--space-sm) 5vw;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: var(--space-sm);
       }
 
-      .site-nav--hero .nav-links {
-        position: fixed;
-        inset: 0;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: var(--space-md);
-        background: var(--cream);
-        color: var(--black);
-        z-index: 1002;
-        transform: translateY(-100%);
-        visibility: hidden;
-        pointer-events: none;
-        transition: transform 0.55s var(--ease), visibility 0s linear 0.55s;
-      }
-
-      .site-nav--hero .nav-links.open {
-        transform: translateY(0);
-        visibility: visible;
-        pointer-events: auto;
-        transition: transform 0.55s var(--ease), visibility 0s linear 0s;
-      }
-
-      .site-nav--fixed .nav-links {
-        display: none;
-      }
-
-      .site-nav--hero .nav-links > a,
-      .site-nav--hero .nav-links .nav-cta {
-        font-size: var(--text-sm-fluid);
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-      }
-
+      .site-nav--hero .nav-links,
+      .site-nav--fixed .nav-links,
+      .site-nav--hero .nav-tagline,
+      .site-nav--fixed .nav-tagline,
       .site-nav--hero .nav-right,
       .site-nav--fixed .nav-right {
         display: none;
+      }
+
+      .nav-logo {
+        position: relative;
+        z-index: 1003;
+      }
+
+      .nav-contact-mobile {
+        display: block;
       }
 
       .nav-hamburger {
         display: flex;
       }
 
-      .nav-hamburger.active span:nth-child(1) {
-        transform: translateY(6.5px) rotate(45deg);
-      }
-
-      .nav-hamburger.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .nav-hamburger.active span:nth-child(3) {
-        transform: translateY(-6.5px) rotate(-45deg);
-      }
-
-      .nav-drawer-extras {
+      .nav-overlay {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--space-md);
-        margin-top: var(--space-md);
       }
+    }
 
+    @media (max-width: 720px) {
       .pillars {
         flex-direction: column;
         gap: var(--space-md);
@@ -1283,9 +1378,6 @@
       }
 
       /* Mobile type scale is handled by the fluid clamp tokens; no overrides needed. */
-
-
-
     }
 
     /* Reduced motion overrides for animations */
@@ -1326,19 +1418,10 @@
 
       <div class="nav-primary nav-links" id="navMenu">
         <a href="#inicio" data-i18n="nav.inicio">Inicio</a>
-        <a href="#nosotros" data-i18n="nav.nosotros">Nosotros</a>
+        <a href="#sobre" data-i18n="nav.nosotros">Nosotros</a>
         <a href="#menu" data-i18n="nav.menu">Menú</a>
         <a href="#galeria" data-i18n="nav.galeria">Galería</a>
         <a href="#ubicacion" data-i18n="nav.ubicacion">Ubicación</a>
-
-        <div class="nav-drawer-extras">
-          <a href="#ubicacion" class="nav-cta" data-i18n="nav.contacto">contacto</a>
-          <div class="lang-toggle" role="group" aria-label="Selector de idioma">
-            <button type="button" data-lang="es" aria-pressed="true">ES</button>
-            <span>/</span>
-            <button type="button" data-lang="en" aria-pressed="false">EN</button>
-          </div>
-        </div>
       </div>
 
       <p class="nav-tagline" data-i18n="hero.subtitle">Café de especialidad · Bilbao</p>
@@ -1352,16 +1435,30 @@
         </div>
       </div>
 
-      <button class="nav-hamburger" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
-        <span></span>
+      <a href="#ubicacion" class="nav-cta nav-contact-mobile" data-i18n="nav.contacto">contacto</a>
+
+      <button class="nav-hamburger" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navOverlay">
         <span></span>
         <span></span>
       </button>
     </nav>
   </header>
 
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true">
+    <nav class="nav-overlay-nav" aria-label="Móvil">
+      <a href="#menu" data-i18n="nav.menu_mobile">carta</a>
+      <a href="#galeria" data-i18n="nav.galeria_mobile">galería</a>
+      <a href="#sobre" data-i18n="nav.nosotros_mobile">sobre nosotros</a>
+      <a href="#ubicacion" data-i18n="nav.ubicacion_mobile">ubicación</a>
+    </nav>
+    <div class="nav-overlay-lang" role="group" aria-label="Selector de idioma">
+      <button type="button" data-lang="es" aria-pressed="true">Español</button>
+      <button type="button" data-lang="en" aria-pressed="false">English</button>
+    </div>
+  </div>
+
   <main>
-    <section class="about" id="nosotros" aria-labelledby="about-title">
+    <section class="about" id="sobre" aria-labelledby="about-title">
       <div class="about-grid">
         <div class="about-text">
           <span class="label reveal" data-i18n="about.label">By Maison Coco</span>
@@ -1548,38 +1645,31 @@
     <p><a href="https://instagram.com/cocolatte.coffee" target="_blank" rel="noopener noreferrer">@cocolatte.coffee</a></p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.0-beta.21/bundled/locomotive-scroll.bundle.min.js"></script>
-  <script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+  <script defer>
     // =====================
-    // Locomotive Scroll v5 — native scroll, keeps fixed/sticky intact
+    // Lenis smooth scroll
     // =====================
-    let locoScroll = null;
-    try {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!prefersReducedMotion && typeof LocomotiveScroll !== 'undefined') {
-        locoScroll = new LocomotiveScroll({
-          lenisOptions: {
-            lerp: 0.1,
-            duration: 1.2,
-            smoothWheel: true
-          }
-        });
+    let lenis = null;
 
-        // Safety check: v5 must keep native window.scrollY valid.
-        window.addEventListener('load', () => {
-          setTimeout(() => {
-            const nativeScrollWorks = typeof window.scrollY === 'number';
-            if (!nativeScrollWorks) {
-              try { locoScroll.destroy(); } catch (e) {}
-              locoScroll = null;
-            }
-          }, 50);
-        }, { once: true });
+    function initLenis() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion || typeof Lenis === 'undefined') return;
+
+      lenis = new Lenis({
+        lerp: 0.1,
+        wheelMultiplier: 1,
+        smoothWheel: true
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
       }
-    } catch (e) {
-      // CDN failed or init threw: silently fall back to native scroll.
-      locoScroll = null;
+      requestAnimationFrame(raf);
     }
+
+    initLenis();
 
     // =====================
     // Velocity marquee
@@ -1865,6 +1955,10 @@
         'nav.galeria': 'Galería',
         'nav.ubicacion': 'Ubicación',
         'nav.contacto': 'contacto',
+        'nav.menu_mobile': 'carta',
+        'nav.galeria_mobile': 'galería',
+        'nav.nosotros_mobile': 'sobre nosotros',
+        'nav.ubicacion_mobile': 'ubicación',
         'hero.subtitle': 'Café de especialidad · Bilbao',
         'hero.card.note': 'la 10ª es por nosotros!',
         'hero.scroll': 'Scroll',
@@ -1929,6 +2023,10 @@
         'nav.galeria': 'Gallery',
         'nav.ubicacion': 'Location',
         'nav.contacto': 'contact',
+        'nav.menu_mobile': 'menu',
+        'nav.galeria_mobile': 'gallery',
+        'nav.nosotros_mobile': 'about us',
+        'nav.ubicacion_mobile': 'location',
         'hero.subtitle': 'Specialty coffee · Bilbao',
         'hero.card.note': 'the 10th is on us!',
         'hero.scroll': 'Scroll',
@@ -2049,7 +2147,7 @@
     // Language toggle
     // =====================
     let currentLang = 'es';
-    const langButtons = document.querySelectorAll('.lang-toggle button');
+    const langButtons = document.querySelectorAll('.lang-toggle button, .nav-overlay-lang button');
 
     function setLanguage(lang) {
       currentLang = lang;
@@ -2067,6 +2165,10 @@
       });
 
       renderMenu(lang);
+
+      if (navToggle) {
+        navToggle.setAttribute('aria-label', getMenuLabel(navOverlay.classList.contains('open')));
+      }
     }
 
     langButtons.forEach(btn => {
@@ -2129,24 +2231,65 @@
     // Mobile menu
     // =====================
     const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
+    const navOverlay = document.getElementById('navOverlay');
 
-    navToggle.addEventListener('click', () => {
-      const isOpen = navMenu.classList.toggle('open');
-      navToggle.classList.toggle('active', isOpen);
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      navToggle.setAttribute('aria-label', isOpen
+    function getMenuLabel(open) {
+      return open
         ? (currentLang === 'es' ? 'Cerrar menú' : 'Close menu')
-        : (currentLang === 'es' ? 'Abrir menú' : 'Open menu'));
-      nav.classList.toggle('menu-open', isOpen);
+        : (currentLang === 'es' ? 'Abrir menú' : 'Open menu');
+    }
+
+    function openMenu() {
+      navOverlay.classList.add('open');
+      navToggle.classList.add('active');
+      navToggle.setAttribute('aria-expanded', 'true');
+      navToggle.setAttribute('aria-label', getMenuLabel(true));
+      navOverlay.setAttribute('aria-hidden', 'false');
+      nav.classList.add('menu-open');
+      document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+      navOverlay.classList.remove('open');
+      navToggle.classList.remove('active');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', getMenuLabel(false));
+      navOverlay.setAttribute('aria-hidden', 'true');
+      nav.classList.remove('menu-open');
+      document.body.classList.remove('menu-open');
+    }
+
+    function toggleMenu() {
+      if (navOverlay.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    }
+
+    navToggle.addEventListener('click', toggleMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navOverlay.classList.contains('open')) {
+        closeMenu();
+      }
     });
 
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('open');
-        navToggle.classList.remove('active');
-        navToggle.setAttribute('aria-expanded', 'false');
-        nav.classList.remove('menu-open');
+    // =====================
+    // Smooth anchor scrolling (Lenis)
+    // =====================
+    document.querySelectorAll('.site-nav a[href^="#"], .nav-overlay a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        const target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        closeMenu();
+        if (lenis) {
+          lenis.scrollTo(target);
+        } else {
+          target.scrollIntoView({ behavior: 'auto' });
+        }
       });
     });
 
