@@ -954,8 +954,7 @@
       position: relative;
       padding: 0;
       overflow: hidden;
-      height: 50vh;
-      min-height: 320px;
+      height: max(50vh, 480px);
       background: var(--black);
       display: flex;
       align-items: center;
@@ -963,7 +962,7 @@
 
     .dessert-band-bg {
       position: absolute;
-      inset: -14% 0;
+      inset: -22% 0;
       z-index: 0;
     }
 
@@ -997,7 +996,7 @@
       font-family: 'Inter', sans-serif;
       font-weight: 400;
       font-size: clamp(3rem, 12.5vw, 11rem);
-      line-height: 1;
+      line-height: 1.6;
       letter-spacing: -0.03em;
       color: var(--gold-soft);
       text-transform: lowercase;
@@ -2116,8 +2115,8 @@
 
     if (dessertContent) {
       // S-shaped baseline: one full sine period across the word, each letter tilted to the slope.
-      const WAVE_AMP_EM = 0.5;  // vertical swing, in em of the band font size
-      const WAVE_ROT_MAX = 13;   // max tilt in degrees
+      const WAVE_AMP_EM = 0.32; // vertical swing, in em of the band font size
+      const WAVE_ROT_MAX = 10;  // max tilt in degrees
       const dessertChars = Array.from('budín de red velvet');
       const dessertWordHTML = dessertChars.map((ch, i) => {
         const theta = (i / (dessertChars.length - 1)) * Math.PI * 2;
@@ -2168,7 +2167,7 @@
         dessertLastScrollY = window.scrollY;
 
         // Drift right; scrolling down speeds it up, scrolling up pushes it back.
-        dessertX += 140 * dt;
+        dessertX += 60 * dt;
         dessertX += Math.max(-360, Math.min(360, scrollDelta * 1.8));
 
         // Wrap seamlessly inside [-halfWidth, 0].
@@ -2192,7 +2191,7 @@
           const rect = dessertSection.getBoundingClientRect();
           const p = Math.max(-1, Math.min(1,
             (window.innerHeight / 2 - (rect.top + rect.height / 2)) / (window.innerHeight / 2 + rect.height / 2)));
-          dessertBg.style.transform = 'translate3d(0,' + (p * rect.height * 0.14).toFixed(2) + 'px,0)';
+          dessertBg.style.transform = 'translate3d(0,' + (p * rect.height * 0.20).toFixed(2) + 'px,0)';
         }
       }
       dessertLastTime = now;
