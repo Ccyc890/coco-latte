@@ -949,6 +949,74 @@
       line-height: 1;
     }
 
+    /* ---------- Dessert band ---------- */
+    .dessert-band {
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+      height: clamp(340px, 46vw, 620px);
+      background: var(--black);
+      display: flex;
+      align-items: center;
+    }
+
+    .dessert-band-bg {
+      position: absolute;
+      inset: -14% 0;
+      z-index: 0;
+    }
+
+    .dessert-band-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      will-change: transform;
+    }
+
+    .dessert-band::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(rgba(19, 18, 16, 0.34), rgba(19, 18, 16, 0.5));
+      pointer-events: none;
+    }
+
+    .dessert-band-viewport {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .dessert-band-content {
+      display: flex;
+      white-space: nowrap;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: clamp(3rem, 12.5vw, 11rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--gold-soft);
+      text-transform: lowercase;
+      will-change: transform;
+    }
+
+    .dessert-band-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+      padding-right: 0.35em;
+      flex-shrink: 0;
+    }
+
+    .dessert-band-glyph {
+      color: var(--gold);
+      font-size: 0.5em;
+      line-height: 1;
+    }
+
     /* ---------- Menu ---------- */
     .menu-section {
       background: #FBFAF7;
@@ -1676,6 +1744,12 @@
       .nav-links {
         transition: none;
       }
+
+      .dessert-band-content,
+      .dessert-band-bg img {
+        animation: none;
+        transform: none !important;
+      }
     }
 
     /*
@@ -1877,6 +1951,15 @@
       </div>
     </section>
 
+    <section class="dessert-band" id="budin" aria-label="Budín de red velvet">
+      <div class="dessert-band-bg" aria-hidden="true">
+        <img src="img/counter.jpg" alt="" loading="lazy" decoding="async" />
+      </div>
+      <div class="dessert-band-viewport" aria-hidden="true">
+        <div class="dessert-band-content" id="dessertBandContent"></div>
+      </div>
+    </section>
+
     <section class="location-section" id="ubicacion" aria-labelledby="location-title">
       <div class="location-grid">
         <div class="location-info">
@@ -2006,6 +2089,76 @@
 
     if (marqueeRunning) {
       requestAnimationFrame(marqueeLoop);
+    }
+
+    // =====================
+    // Dessert band (drifting word + photo parallax)
+    // =====================
+    const dessertContent = document.getElementById('dessertBandContent');
+    const dessertSection = document.querySelector('.dessert-band');
+    const dessertBg = document.querySelector('.dessert-band-bg');
+
+    if (dessertContent) {
+      const dessertItemHTML = '<span class="dessert-band-item">budín de red velvet <span class="dessert-band-glyph" aria-hidden="true">✳</span></span>';
+
+      // Build one long strip and duplicate it for seamless looping.
+      for (let i = 0; i < 8; i++) {
+        dessertContent.insertAdjacentHTML('beforeend', dessertItemHTML);
+      }
+      dessertContent.insertAdjacentHTML('beforeend', dessertContent.innerHTML);
+    }
+
+    let dessertX = 0;
+    let dessertHalfWidth = 0;
+    let dessertLastScrollY = window.scrollY;
+    let dessertVisible = true;
+    const dessertRunning = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function updateDessertGeometry() {
+      if (!dessertContent) return;
+      dessertHalfWidth = dessertContent.scrollWidth / 2;
+    }
+
+    if (dessertContent) {
+      updateDessertGeometry();
+      window.addEventListener('resize', updateDessertGeometry);
+
+      const dessertObserver = new IntersectionObserver((entries) => {
+        dessertVisible = entries[0].isIntersecting;
+      }, { threshold: 0 });
+      if (dessertSection) dessertObserver.observe(dessertSection);
+    }
+
+    let dessertLastTime = performance.now();
+    function dessertLoop(now) {
+      if (dessertVisible && dessertContent && dessertHalfWidth > 0) {
+        const dt = Math.min((now - dessertLastTime) / 1000, 0.05);
+        const scrollDelta = window.scrollY - dessertLastScrollY;
+        dessertLastScrollY = window.scrollY;
+
+        // Drift right; scrolling down speeds it up, scrolling up pushes it back.
+        dessertX += 50 * dt;
+        dessertX += Math.max(-220, Math.min(220, scrollDelta * 0.6));
+
+        // Wrap seamlessly inside [-halfWidth, 0].
+        dessertX = ((dessertX % dessertHalfWidth) + dessertHalfWidth) % dessertHalfWidth - dessertHalfWidth;
+
+        dessertContent.style.transform = 'translateX(' + dessertX.toFixed(2) + 'px)';
+
+        // Photo parallax: progress -1..1 from the section's distance to the viewport centre.
+        if (dessertBg && dessertSection) {
+          const rect = dessertSection.getBoundingClientRect();
+          const p = Math.max(-1, Math.min(1,
+            (window.innerHeight / 2 - (rect.top + rect.height / 2)) / (window.innerHeight / 2 + rect.height / 2)));
+          dessertBg.style.transform = 'translate3d(0,' + (p * rect.height * 0.14).toFixed(2) + 'px,0)';
+        }
+      }
+      dessertLastTime = now;
+      requestAnimationFrame(dessertLoop);
+    }
+
+    if (dessertRunning) {
+      requestAnimationFrame(dessertLoop);
     }
 
     // =====================
