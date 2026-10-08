@@ -1422,9 +1422,14 @@
         box-shadow: 0 6px 24px rgba(18, 15, 14, 0.07);
       }
 
+      /* band only reaches up to the viewport top while the tabs are actually stuck */
       .menu-tabs::before {
-        top: calc(-1 * (var(--nav-h, 54px) + 0.75rem));
+        top: 0;
         bottom: -0.75rem;
+      }
+
+      .menu-tabs.is-stuck::before {
+        top: calc(-1 * (var(--nav-h, 54px) + 0.75rem));
       }
 
       .menu-tab {
@@ -2305,8 +2310,13 @@
     window.addEventListener('resize', () => { heroHeight = heroEl ? heroEl.offsetHeight : window.innerHeight; updateNav(); });
 
     // Nav docks only when its natural spot (hero center) would scroll past the top
+    const menuTabsEl = document.getElementById('menuTabs');
     function updateNav() {
       document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+      if (menuTabsEl) {
+        const stickTop = nav.offsetHeight + 0.75 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+        menuTabsEl.classList.toggle('is-stuck', menuTabsEl.getBoundingClientRect().top <= stickTop + 1);
+      }
       // Static (absolute, hero center) until its document position reaches the
       // viewport top, then stuck fixed at top — TWKS behavior.
       const dockPoint = navDocTop();
