@@ -1316,20 +1316,24 @@
       overflow: hidden;
     }
 
-    .gallery-item img {
-      width: 100%;
-      height: auto;
+    .gallery-media {
+      overflow: hidden;
       aspect-ratio: 4 / 5;
-      object-fit: cover;
-      transition: transform 0.9s var(--ease);
     }
 
-    .gallery-col:last-child .gallery-item img {
+    .gallery-col:last-child .gallery-media {
       aspect-ratio: 4 / 3;
     }
 
-    .gallery-item:hover img {
-      transform: scale(1.03);
+    .gallery-media img {
+      width: 100%;
+      height: 118%;
+      /* Centre the 18% overhang so ±9% of travel never reveals a gap. */
+      position: relative;
+      top: -9%;
+      object-fit: cover;
+      display: block;
+      will-change: transform;
     }
 
     .gallery-item figcaption {
@@ -1373,8 +1377,8 @@
         padding-top: 0;
       }
 
-      .gallery-item img,
-      .gallery-col:last-child .gallery-item img {
+      .gallery-media,
+      .gallery-col:last-child .gallery-media {
         aspect-ratio: 3 / 4;
       }
 
@@ -1900,28 +1904,36 @@
       <div class="gallery-grid">
         <div class="gallery-col">
           <figure class="gallery-item reveal stagger-1">
-            <img src="img/storefront.jpg" alt="Fachada de COCO LATTE" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/storefront.jpg" alt="Fachada de COCO LATTE" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item1.title">La fachada</span>
               <span class="subtitle" data-i18n="gallery.item1.subtitle">mármol negro y luz de Bilbao</span>
             </figcaption>
           </figure>
           <figure class="gallery-item reveal stagger-3">
-            <img src="img/grinders.jpg" alt="Molinos blancos y vaso takeaway" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/grinders.jpg" alt="Molinos blancos y vaso takeaway" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item3.title">Los molinos</span>
               <span class="subtitle" data-i18n="gallery.item3.subtitle">café recién molido</span>
             </figcaption>
           </figure>
           <figure class="gallery-item reveal stagger-5">
-            <img src="img/interior.jpg" alt="Interior con silla bouclé blanca y mesas de mármol" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/interior.jpg" alt="Interior con silla bouclé blanca y mesas de mármol" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item5.title">Dentro</span>
               <span class="subtitle" data-i18n="gallery.item5.subtitle">un rincón para quedarse</span>
             </figcaption>
           </figure>
           <figure class="gallery-item reveal stagger-1">
-            <img src="img/hero-cup.jpg" alt="Taza negra de espresso en mesa de mármol" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/hero-cup.jpg" alt="Taza negra de espresso en mesa de mármol" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item7.title">El rito</span>
               <span class="subtitle" data-i18n="gallery.item7.subtitle">café de especialidad de Guatemala</span>
@@ -1930,28 +1942,36 @@
         </div>
         <div class="gallery-col">
           <figure class="gallery-item reveal stagger-2">
-            <img src="img/counter.jpg" alt="Barra de mármol con máquina y molinos" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/counter.jpg" alt="Barra de mármol con máquina y molinos" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item2.title">La barra</span>
               <span class="subtitle" data-i18n="gallery.item2.subtitle">mármol y máquina de espresso</span>
             </figcaption>
           </figure>
           <figure class="gallery-item reveal stagger-4">
-            <img src="img/synesso.jpg" alt="Máquina Synesso con vasos de marca" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/synesso.jpg" alt="Máquina Synesso con vasos de marca" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item4.title">La Synesso</span>
               <span class="subtitle" data-i18n="gallery.item4.subtitle">precisión en cada taza</span>
             </figcaption>
           </figure>
           <figure class="gallery-item reveal stagger-6">
-            <img src="img/takeaway-cup.jpg" alt="Vaso COCO LATTE en mano frente a la fachada" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/takeaway-cup.jpg" alt="Vaso COCO LATTE en mano frente a la fachada" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item6.title">Para llevar</span>
               <span class="subtitle" data-i18n="gallery.item6.subtitle">tu latte donde quieras</span>
             </figcaption>
           </figure>
           <figure class="gallery-item reveal stagger-2">
-            <img src="img/machine.jpg" alt="Máquina de espresso blanca" loading="lazy" decoding="async" />
+            <div class="gallery-media">
+              <img src="img/machine.jpg" alt="Máquina de espresso blanca" loading="lazy" decoding="async" />
+            </div>
             <figcaption>
               <span class="title" data-i18n="gallery.item8.title">La máquina</span>
               <span class="subtitle" data-i18n="gallery.item8.subtitle">cada extracción, un ritual</span>
@@ -2200,6 +2220,33 @@
 
     if (dessertRunning) {
       requestAnimationFrame(dessertLoop);
+    }
+
+    // =====================
+    // Gallery parallax (+ eased hover zoom)
+    // =====================
+    const galleryImgs = Array.from(document.querySelectorAll('.gallery-media img'));
+    const galleryHover = galleryImgs.map(() => 1);
+
+    function galleryLoop() {
+      for (let i = 0; i < galleryImgs.length; i++) {
+        const img = galleryImgs[i];
+        const r = img.parentElement.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) continue;
+
+        const p = Math.max(0, Math.min(1, (window.innerHeight - r.top) / (window.innerHeight + r.height)));
+        const y = (0.5 - p) * r.height * 0.18;
+
+        const target = img.closest('.gallery-item').matches(':hover') ? 1.03 : 1;
+        galleryHover[i] += (target - galleryHover[i]) * 0.12;
+
+        img.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0) scale(' + galleryHover[i].toFixed(4) + ')';
+      }
+      requestAnimationFrame(galleryLoop);
+    }
+
+    if (galleryImgs.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      requestAnimationFrame(galleryLoop);
     }
 
     // =====================
