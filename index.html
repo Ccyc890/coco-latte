@@ -512,6 +512,10 @@
     }
 
     /* ---------- Hero ---------- */
+    .hero-mobile {
+      display: none;
+    }
+
     .hero {
       position: relative;
       height: 100svh;
@@ -1322,9 +1326,91 @@
     }
 
     @media (max-width: 1024px) {
-      .site-nav--hero {
+      /* TWKS mobile/tablet landing: logo | contacto (2nd column) | hamburger,
+         empty band, centred brand mark, two-line tagline anchored to column 2 */
+      #nav.site-nav--hero {
         top: 0;
         transform: none;
+        display: grid;
+        grid-template-columns: 51.2% 1fr;
+        align-items: center;
+        padding: var(--space-xs) 2.3vw;
+        column-gap: 0;
+      }
+
+      .site-nav--hero .nav-logo,
+      .site-nav--hero .nav-contact-mobile {
+        font-size: 4.2vw;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        text-transform: lowercase;
+      }
+
+      .site-nav--hero .nav-logo {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+      }
+
+      .site-nav--hero .nav-contact-mobile {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
+        position: static;
+        transform: none;
+        letter-spacing: -0.01em;
+      }
+
+      .site-nav--hero .nav-hamburger {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+      }
+
+      .site-nav--hero .nav-hamburger span {
+        width: 4.7vw;
+        height: 1px;
+      }
+
+      .hero-mobile {
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .hero-mobile-mark {
+        position: absolute;
+        left: 50.2%;
+        top: 48.3%;
+        transform: translate(-50%, -50%);
+        font-family: 'Instrument Serif', Georgia, serif;
+        font-weight: 400;
+        font-size: 17.5vw;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        color: var(--cream);
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero-mobile-tagline {
+        position: absolute;
+        left: 51.2%;
+        top: 53%;
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        font-size: 4.2vw;
+        line-height: 1.2;
+        color: var(--cream);
+        text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55), 0 0 2px rgba(0, 0, 0, 0.4);
+      }
+
+      .hero-mobile-tagline span {
+        display: block;
       }
 
       .site-nav--hero,
@@ -1442,6 +1528,11 @@
         <span></span>
       </button>
     </nav>
+
+    <div class="hero-mobile" aria-hidden="false">
+      <span class="hero-mobile-mark" data-i18n="brand.name">coco latte</span>
+      <p class="hero-mobile-tagline" data-i18n="hero.subtitle_mobile"><span>Café de especialidad</span><span>Bilbao</span></p>
+    </div>
   </header>
 
   <div class="nav-overlay" id="navOverlay" aria-hidden="true">
@@ -1960,6 +2051,7 @@
         'nav.nosotros_mobile': 'sobre nosotros',
         'nav.ubicacion_mobile': 'ubicación',
         'hero.subtitle': 'Café de especialidad · Bilbao',
+        'hero.subtitle_mobile': 'Café de especialidad|Bilbao',
         'hero.card.note': 'la 10ª es por nosotros!',
         'hero.scroll': 'Scroll',
         'about.label': 'By Maison Coco',
@@ -2028,6 +2120,7 @@
         'nav.nosotros_mobile': 'about us',
         'nav.ubicacion_mobile': 'location',
         'hero.subtitle': 'Specialty coffee · Bilbao',
+        'hero.subtitle_mobile': 'Specialty coffee|Bilbao',
         'hero.card.note': 'the 10th is on us!',
         'hero.scroll': 'Scroll',
         'about.label': 'By Maison Coco',
@@ -2159,8 +2252,13 @@
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
-        if (translations[lang][key]) {
-          el.textContent = translations[lang][key];
+        const value = translations[lang][key];
+        if (!value) return;
+        // "line1|line2" renders as two stacked lines (mobile hero tagline)
+        if (value.includes('|')) {
+          el.innerHTML = value.split('|').map(line => '<span>' + line + '</span>').join('');
+        } else {
+          el.textContent = value;
         }
       });
 
