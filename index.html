@@ -637,6 +637,109 @@
     .stagger-6 { transition-delay: 0.48s; }
 
     /* ---------- About ---------- */
+    /* ===== Intro (TWKS-style statement after the hero) ===== */
+    .intro {
+      background: var(--cream);
+      color: var(--black);
+      padding: clamp(3.5rem, 12vw, 9rem) 2.3vw clamp(4rem, 14vw, 10rem);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .intro-statement {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(2.1rem, 8.4vw, 7.25rem);
+      line-height: 1.05;
+      padding-right: 7vw;
+      letter-spacing: -0.045em;
+      text-indent: 18%;
+      max-width: 22ch;
+    }
+
+    .intro-smile {
+      display: inline-block;
+      width: 0.82em;
+      height: 0.82em;
+      vertical-align: -0.1em;
+    }
+
+    .intro-lower {
+      margin-top: clamp(4rem, 22vw, 11rem);
+      margin-left: 18.6%;
+      margin-right: 7vw;
+    }
+
+    .intro-rule {
+      border-top: 1px solid var(--black);
+      padding-top: 0.55rem;
+    }
+
+    .intro-label,
+    .intro-link {
+      font-size: clamp(1rem, 3.6vw, 1.5rem);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+
+    .intro-body {
+      margin: clamp(2.5rem, 12vw, 5rem) 0 0;
+      max-width: 34ch;
+      font-weight: 500;
+      font-size: clamp(1.25rem, 4.7vw, 2.25rem);
+      line-height: 1.17;
+      letter-spacing: -0.035em;
+      text-indent: 40%;
+    }
+
+    .intro-links {
+      margin-top: clamp(3rem, 14vw, 6rem);
+    }
+
+    .intro-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.9rem 0.55rem 0;
+      border-top: 1px solid var(--black);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .intro-link:last-child {
+      border-bottom: 1px solid var(--black);
+    }
+
+    .intro-link svg {
+      width: 1.1em;
+      height: 1.1em;
+      transition: transform 0.35s var(--ease);
+    }
+
+    .intro-link:hover svg {
+      transform: translateX(0.3em);
+    }
+
+    @media (min-width: 1025px) {
+      .intro-statement {
+        font-size: clamp(3.5rem, 6.4vw, 7.25rem);
+        max-width: 24ch;
+      }
+
+      .intro-lower {
+        margin-left: 51.2%;
+      }
+
+      .intro-label,
+      .intro-link {
+        font-size: 1.125rem;
+      }
+
+      .intro-body {
+        font-size: clamp(1.5rem, 2.2vw, 2.25rem);
+        max-width: 30ch;
+      }
+    }
+
     .about {
       background: var(--cream);
     }
@@ -1403,8 +1506,8 @@
         top: 47.6%;
         margin: 0;
         font-family: 'Inter', sans-serif;
-        width: 46.5%;
-        font-size: 4.8vw;
+        width: 41%;
+        font-size: 4.2vw;
         font-weight: 500;
         line-height: 1.2;
         letter-spacing: -0.035em;
@@ -1595,6 +1698,25 @@
   </div>
 
   <main>
+    <section class="intro" id="inicio-intro" aria-label="Presentación">
+      <p class="intro-statement reveal">
+        <span data-i18n="intro.s1">Cafetería de especialidad</span>
+        <svg class="intro-smile" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8.6" cy="9.6" r="1.1" fill="currentColor"/><circle cx="15.4" cy="9.6" r="1.1" fill="currentColor"/><path d="M7.2 14.2c1.2 2.2 3 3.2 4.8 3.2s3.6-1 4.8-3.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span data-i18n="intro.s2">y brunch en Bilbao. Café de origen, repostería casera y tostadas para disfrutar sin prisa, desde primera hora de la mañana.</span>
+      </p>
+
+      <div class="intro-lower">
+        <div class="intro-rule reveal">
+          <span class="intro-label" data-i18n="intro.label">Nuestra idea</span>
+        </div>
+        <p class="intro-body reveal stagger-1" data-i18n="intro.body">Un buen café no necesita ruido. Elegimos café de especialidad de Guatemala, lo extraemos con precisión y horneamos a diario, para que cada taza y cada tostada sepan a lo que son. El brunch dura de 09:00 a 15:00, y aquí nadie tiene prisa.</p>
+        <nav class="intro-links reveal stagger-2" aria-label="Accesos rápidos">
+          <a href="#menu" class="intro-link"><span data-i18n="intro.link1">Carta</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a href="#ubicacion" class="intro-link"><span data-i18n="intro.link2">Ubicación</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </nav>
+      </div>
+    </section>
+
     <section class="about" id="sobre" aria-labelledby="about-title">
       <div class="about-grid">
         <div class="about-text">
@@ -2100,6 +2222,12 @@
         'hero.subtitle_mobile': 'Café de especialidad en Bilbao',
         'hero.card.note': 'la 10ª es por nosotros!',
         'hero.scroll': 'Scroll',
+        'intro.s1': 'Cafetería de especialidad',
+        'intro.s2': 'y brunch en Bilbao. Café de origen, repostería casera y tostadas para disfrutar sin prisa, desde primera hora de la mañana.',
+        'intro.label': 'Nuestra idea',
+        'intro.body': 'Un buen café no necesita ruido. Elegimos café de especialidad de Guatemala, lo extraemos con precisión y horneamos a diario, para que cada taza y cada tostada sepan a lo que son. El brunch dura de 09:00 a 15:00, y aquí nadie tiene prisa.',
+        'intro.link1': 'Carta',
+        'intro.link2': 'Ubicación',
         'about.label': 'By Maison Coco',
         'about.title': 'Un rincón de calma y buen café en Bilbao',
         'about.p1': 'Servimos café de especialidad de Guatemala en un espacio pensado para disfrutar con calma. Mármol, tonos crema, detalles dorados y el aroma de un buen espresso nos definen.',
@@ -2169,6 +2297,12 @@
         'hero.subtitle_mobile': 'Specialty coffee in Bilbao',
         'hero.card.note': 'the 10th is on us!',
         'hero.scroll': 'Scroll',
+        'intro.s1': 'Specialty coffee',
+        'intro.s2': 'and brunch in Bilbao. Single-origin coffee, homemade pastries and toast to enjoy without rushing, from first thing in the morning.',
+        'intro.label': 'Our idea',
+        'intro.body': 'Good coffee needs no noise. We pick specialty coffee from Guatemala, extract it with precision and bake daily, so every cup and every toast tastes like what it is. Brunch runs from 09:00 to 15:00, and nobody is in a hurry here.',
+        'intro.link1': 'Menu',
+        'intro.link2': 'Location',
         'about.label': 'By Maison Coco',
         'about.title': 'A quiet corner of great coffee in Bilbao',
         'about.p1': 'We serve specialty coffee from Guatemala in a space designed to be enjoyed slowly. Marble, cream tones, golden details and the aroma of a good espresso define us.',
@@ -2437,7 +2571,7 @@
     // =====================
     // Smooth anchor scrolling (Lenis)
     // =====================
-    document.querySelectorAll('.site-nav a[href^="#"], .nav-overlay a[href^="#"]').forEach(anchor => {
+    document.querySelectorAll('.site-nav a[href^="#"], .nav-overlay a[href^="#"], .intro a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
         const target = document.querySelector(href);
