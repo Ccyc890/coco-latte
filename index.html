@@ -7,7 +7,7 @@
   <meta name="description" content="COCO LATTE by MAISON COCO. Specialty coffee from Guatemala, homemade bakery and toast brunch in Bilbao." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400&display=swap" rel="stylesheet" />
   <style>
     :root {
       --cream: #F5F1EA;
@@ -149,13 +149,26 @@
       display: block;
     }
 
-    .label {
+    /* Type roles (Instrument Serif 400 = display/headings, Inter 400 = body/UI):
+       UI label  -> Inter, uppercase, small, +0.06em tracking, muted
+       Heading   -> Instrument Serif, tight -0.03em tracking
+       Body      -> Inter, muted, 1.6 leading */
+    .label,
+    .meta-label,
+    .intro-label {
       font-family: 'Inter', sans-serif;
       font-size: var(--text-sm-fluid);
       font-weight: 400;
-      letter-spacing: 0.26em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--gold-dark);
+      color: rgba(18, 15, 14, 0.62);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1.04;
     }
 
     /* ---------- Nav ---------- */
@@ -476,7 +489,7 @@
       gap: 0;
       font-family: 'Inter', sans-serif;
       font-size: 4.7vw;
-      font-weight: 500;
+      font-weight: 400;
       line-height: 1.1;
       letter-spacing: -0.01em;
     }
@@ -647,11 +660,12 @@
 
     .intro-statement {
       margin: 0;
-      font-weight: 500;
-      font-size: clamp(2.1rem, 8.4vw, 7.25rem);
-      line-height: 1.05;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.4rem, 9.6vw, 7.5rem);
+      line-height: 1.02;
       padding-right: 7vw;
-      letter-spacing: -0.045em;
+      letter-spacing: -0.02em;
       text-indent: 18%;
       max-width: 22ch;
     }
@@ -674,17 +688,20 @@
       padding-top: 0.55rem;
     }
 
-    .intro-label,
+    .intro-label {
+      font-size: clamp(0.8125rem, 3vw, 1rem);
+    }
+
     .intro-link {
       font-size: clamp(1rem, 3.6vw, 1.5rem);
-      font-weight: 500;
+      font-weight: 400;
       letter-spacing: -0.03em;
     }
 
     .intro-body {
       margin: clamp(2.5rem, 12vw, 5rem) 0 0;
       max-width: 34ch;
-      font-weight: 500;
+      font-weight: 400;
       font-size: clamp(1.25rem, 4.7vw, 2.25rem);
       line-height: 1.17;
       letter-spacing: -0.035em;
@@ -729,7 +746,10 @@
         margin-left: 51.2%;
       }
 
-      .intro-label,
+      .intro-label {
+        font-size: 0.875rem;
+      }
+
       .intro-link {
         font-size: 1.125rem;
       }
@@ -1445,7 +1465,7 @@
       .site-nav--hero .nav-logo,
       .site-nav--hero .nav-contact-mobile {
         font-size: 4vw;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 1;
         letter-spacing: -0.01em;
         text-transform: lowercase;
@@ -1508,7 +1528,7 @@
         font-family: 'Inter', sans-serif;
         width: 41%;
         font-size: 4.2vw;
-        font-weight: 500;
+        font-weight: 400;
         line-height: 1.2;
         letter-spacing: -0.035em;
         text-transform: lowercase;
