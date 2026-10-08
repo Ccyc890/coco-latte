@@ -1380,26 +1380,11 @@
         pointer-events: none;
       }
 
-      .hero-mobile-mark {
-        position: absolute;
-        left: 50.2%;
-        top: 48.3%;
-        transform: translate(-50%, -50%);
-        font-family: 'Instrument Serif', Georgia, serif;
-        font-weight: 400;
-        font-size: 17.5vw;
-        line-height: 1;
-        letter-spacing: -0.03em;
-        color: var(--cream);
-        white-space: nowrap;
-        text-align: center;
-        text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5);
-      }
 
       .hero-mobile-tagline {
         position: absolute;
         left: 51.2%;
-        top: 53%;
+        top: 47.6%;
         margin: 0;
         font-family: 'Inter', sans-serif;
         font-weight: 400;
@@ -1530,7 +1515,6 @@
     </nav>
 
     <div class="hero-mobile" aria-hidden="false">
-      <span class="hero-mobile-mark" data-i18n="brand.name">coco latte</span>
       <p class="hero-mobile-tagline" data-i18n="hero.subtitle_mobile"><span>Café de especialidad</span><span>Bilbao</span></p>
     </div>
   </header>
@@ -2326,7 +2310,9 @@
     }
 
     function navDocTop() {
-      // document Y of the nav's natural centered spot in the hero
+      // tablet/mobile: nav lives at the very top, so it is stuck from the first pixel
+      if (mqNav.matches) return 0;
+      // desktop: document Y of the nav's natural centered spot in the hero
       return heroHeight / 2 - nav.offsetHeight / 2;
     }
     window.addEventListener('scroll', updateNav, { passive: true });
