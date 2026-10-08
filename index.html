@@ -625,21 +625,6 @@
       overflow: clip;
     }
 
-    .scroll-word-eyebrow {
-      position: absolute;
-      top: clamp(7rem, 18vh, 10rem);
-      right: 8vw;
-      z-index: 2;
-      max-width: 260px;
-      display: block;
-      text-align: right;
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
-      font-weight: 400;
-      line-height: 1.45;
-      color: var(--black);
-    }
-
     .scroll-word-eyebrow .glyph {
       display: block;
       font-size: 1.1rem;
@@ -1424,7 +1409,7 @@
 
     <section class="scroll-word" id="scrollWord" aria-label="Coco Latte">
       
-      <div class="scroll-word-pin"><p class="scroll-word-eyebrow"><span class="glyph" aria-hidden="true">✳</span><span data-i18n="scrollword.eyebrow">Café de especialidad, repostería casera y brunch de tostadas.</span></p><div class="scroll-word-giant" id="giantWord">COCO&nbsp;LATTE</div>
+      <div class="scroll-word-pin"><div class="scroll-word-giant" id="giantWord">COCO&nbsp;LATTE</div>
     </div>
     </section>
 
