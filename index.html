@@ -1275,12 +1275,38 @@
     }
 
     @media (max-width: 720px) {
+      /* TWKS mobile project list spacing: full-width 3:4 images, tight
+         caption right under the image, generous gap between articles */
+      .gallery-section {
+        padding-left: 2.3vw;
+        padding-right: 2.3vw;
+      }
+
       .gallery-grid {
         grid-template-columns: 1fr;
+        gap: 8vw 0;
+      }
+
+      .gallery-col {
+        gap: 8vw;
       }
 
       .gallery-col:last-child {
         padding-top: 0;
+      }
+
+      .gallery-item img,
+      .gallery-col:last-child .gallery-item img {
+        aspect-ratio: 3 / 4;
+      }
+
+      .gallery-item figcaption {
+        margin-top: 3.4vw;
+      }
+
+      .gallery-item figcaption .title,
+      .gallery-item figcaption .subtitle {
+        line-height: 1.15;
       }
     }
 
