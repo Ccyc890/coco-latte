@@ -1334,8 +1334,9 @@
         display: grid;
         grid-template-columns: 51.2% 1fr;
         align-items: center;
-        padding: var(--space-xs) 2.3vw;
+        padding: 0.4rem 2.3vw;
         column-gap: 0;
+        z-index: 1000;
       }
 
       .site-nav--hero .nav-logo,
@@ -1396,6 +1397,44 @@
 
       .hero-mobile-tagline span {
         display: block;
+      }
+
+      /* Stuck nav keeps the same compact padding as at rest */
+      #nav.site-nav--hero.stuck {
+        padding: 0.4rem 2.3vw;
+      }
+
+      /* Menu tabs: two equal, large buttons (segmented control) */
+      .menu-tabs {
+        top: calc(var(--nav-h, 54px) + 0.75rem);
+        padding: 0.5rem;
+        gap: 0.5rem;
+        border-radius: 1.5rem;
+        background: transparent;
+      }
+
+      .menu-tabs::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border-radius: inherit;
+        background: #ffffff;
+        box-shadow: 0 6px 24px rgba(18, 15, 14, 0.07);
+      }
+
+      .menu-tabs::before {
+        top: calc(-1 * (var(--nav-h, 54px) + 0.75rem));
+        bottom: -0.75rem;
+      }
+
+      .menu-tab {
+        flex: 1 1 0;
+        min-width: 0;
+        font-size: clamp(0.9375rem, 3.8vw, 1.375rem);
+        letter-spacing: 0.06em;
+        padding: 1.05rem 1rem;
+        border-radius: 1.1rem;
       }
 
       .site-nav--hero,
@@ -2268,6 +2307,7 @@
 
     // Nav docks only when its natural spot (hero center) would scroll past the top
     function updateNav() {
+      document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
       // Static (absolute, hero center) until its document position reaches the
       // viewport top, then stuck fixed at top — TWKS behavior.
       const dockPoint = navDocTop();
