@@ -954,7 +954,7 @@
       position: relative;
       padding: 0;
       overflow: hidden;
-      height: max(50vh, 480px);
+      height: max(50vh, 520px);
       background: var(--black);
       display: flex;
       align-items: center;
@@ -995,7 +995,7 @@
       white-space: nowrap;
       font-family: 'Inter', sans-serif;
       font-weight: 400;
-      font-size: clamp(3rem, 12.5vw, 11rem);
+      font-size: clamp(4rem, 16vw, 14rem);
       line-height: 1.6;
       letter-spacing: -0.03em;
       color: var(--gold-soft);
@@ -2130,21 +2130,18 @@
 
     const DESSERT_SPACING_WIDE = 0.10;   // em, as a word enters from the left
     const DESSERT_SPACING_TIGHT = -0.02; // em, as it reaches the right edge
+    const DESSERT_SLOPE_EM = 0.5;        // em of vertical fall across one viewport width
     let dessertItems = [];
     let dessertWords = [];
+    let dessertChSpans = [];             // per item: its letter spans
+    let dessertFontPx = 16;
 
     if (dessertContent) {
-      // S-shaped baseline: one full sine period across the word, each letter tilted to the slope.
-      const WAVE_AMP_EM = 0.32; // vertical swing, in em of the band font size
-      const WAVE_ROT_MAX = 10;  // max tilt in degrees
+      // Letters are positioned per frame along one screen-space S curve (see dessertLoop).
       const dessertChars = Array.from('budín de red velvet');
-      const dessertWordHTML = dessertChars.map((ch, i) => {
-        const theta = (i / (dessertChars.length - 1)) * Math.PI * 2;
-        const y = WAVE_AMP_EM * Math.sin(theta);
-        const rot = WAVE_ROT_MAX * Math.cos(theta);
-        const style = 'translateY(' + y.toFixed(4) + 'em) rotate(' + rot.toFixed(2) + 'deg)';
-        return '<span class="dessert-band-ch" style="transform:' + style + '">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>';
-      }).join('');
+      const dessertWordHTML = dessertChars.map((ch) =>
+        '<span class="dessert-band-ch">' + (ch === ' ' ? '&nbsp;' : ch) + '</span>'
+      ).join('');
       const dessertItemHTML = '<span class="dessert-band-item"><span class="dessert-band-word">' + dessertWordHTML + '</span> <span class="dessert-band-glyph" aria-hidden="true">✳</span></span>';
 
       // Build one long strip and duplicate it for seamless looping.
@@ -2154,6 +2151,7 @@
       dessertContent.insertAdjacentHTML('beforeend', dessertContent.innerHTML);
       dessertItems = Array.from(dessertContent.querySelectorAll('.dessert-band-item'));
       dessertWords = dessertItems.map((item) => item.querySelector('.dessert-band-word'));
+      dessertChSpans = dessertWords.map((word) => Array.from(word.querySelectorAll('.dessert-band-ch')));
     }
 
     let dessertX = 0;
@@ -2167,6 +2165,7 @@
       let w = 0;
       for (let i = 0; i < 8 && i < dessertItems.length; i++) w += dessertItems[i].offsetWidth;
       dessertHalfWidth = w;
+      if (dessertWords[0]) dessertFontPx = parseFloat(getComputedStyle(dessertWords[0]).fontSize) || dessertFontPx;
     }
 
     if (dessertContent) {
@@ -2195,20 +2194,49 @@
 
         dessertContent.style.transform = 'translateX(' + dessertX.toFixed(2) + 'px)';
 
-        // Tracking: wide as a word's left edge enters at x=0, tighter as it travels right.
-        // Read all positions first, then write all spacings, then re-measure the loop width.
+        // Read phase: one section rect, every item rect and (nearby) word width.
         const vw = window.innerWidth;
-        const lefts = dessertItems.map((item) => item.getBoundingClientRect().left);
+        const vh = window.innerHeight;
+        const sectionRect = dessertSection ? dessertSection.getBoundingClientRect() : null;
+        // 0 as the band starts entering from below, 1 as it exits above.
+        const scrollProgress = sectionRect
+          ? Math.max(0, Math.min(1, (vh - sectionRect.top) / (vh + sectionRect.height)))
+          : 0;
+        const scrollOpen = 1 - scrollProgress;
+        const lefts = [];
+        const widths = [];
+        for (let i = 0; i < dessertItems.length; i++) {
+          const r = dessertItems[i].getBoundingClientRect();
+          lefts.push(r.left);
+          widths.push(r.right >= -vw && r.left <= 2 * vw ? dessertWords[i].offsetWidth : -1);
+        }
+
+        // Write phase. Tracking: wide at the left edge / top of the page, tighter moving right or scrolling down.
         for (let i = 0; i < dessertWords.length; i++) {
-          const progress = Math.max(0, Math.min(1, (vw - lefts[i]) / vw));
-          const spacing = DESSERT_SPACING_TIGHT + (DESSERT_SPACING_WIDE - DESSERT_SPACING_TIGHT) * progress;
+          const horizontalOpen = Math.max(0, Math.min(1, (vw - lefts[i]) / vw));
+          const open = Math.min(horizontalOpen, scrollOpen);
+          const spacing = DESSERT_SPACING_TIGHT + (DESSERT_SPACING_WIDE - DESSERT_SPACING_TIGHT) * open;
           dessertWords[i].style.letterSpacing = spacing.toFixed(4) + 'em';
+
+          if (widths[i] < 0) continue;
+          // One smoothstep S from high-left to low-right, driven by viewport x so repeated copies join.
+          const spans = dessertChSpans[i];
+          const last = spans.length - 1;
+          for (let c = 0; c <= last; c++) {
+            const x = lefts[i] + (c / last) * widths[i];
+            const u = Math.max(0, Math.min(1, x / vw));
+            const s = u * u * (3 - 2 * u);
+            const y = (s - 0.5) * DESSERT_SLOPE_EM;
+            const dyDx = DESSERT_SLOPE_EM * dessertFontPx / vw * 6 * u * (1 - u);
+            const rot = Math.atan(dyDx) * 180 / Math.PI;
+            spans[c].style.transform = 'translateY(' + y.toFixed(4) + 'em) rotate(' + rot.toFixed(2) + 'deg)';
+          }
         }
         updateDessertGeometry();
 
         // Photo parallax: progress -1..1 from the section's distance to the viewport centre.
         if (dessertBg && dessertSection) {
-          const rect = dessertSection.getBoundingClientRect();
+          const rect = sectionRect;
           const p = Math.max(-1, Math.min(1,
             (window.innerHeight / 2 - (rect.top + rect.height / 2)) / (window.innerHeight / 2 + rect.height / 2)));
           dessertBg.style.transform = 'translate3d(0,' + (p * rect.height * 0.20).toFixed(2) + 'px,0)';
