@@ -2237,9 +2237,10 @@
         // Photo parallax: progress -1..1 from the section's distance to the viewport centre.
         if (dessertBg && dessertSection) {
           const rect = sectionRect;
-          const p = Math.max(-1, Math.min(1,
+          /* ease at viewport edges: never fully displaced on entry/exit */
+          const p = 0.8 * Math.max(-1, Math.min(1,
             (window.innerHeight / 2 - (rect.top + rect.height / 2)) / (window.innerHeight / 2 + rect.height / 2)));
-          dessertBg.style.transform = 'translate3d(0,' + (p * rect.height * 0.20).toFixed(2) + 'px,0)';
+          dessertBg.style.transform = 'translate3d(0,' + (p * rect.height * 0.12).toFixed(2) + 'px,0)';
         }
       }
       dessertLastTime = now;
@@ -2262,8 +2263,10 @@
         const r = img.parentElement.getBoundingClientRect();
         if (r.bottom < 0 || r.top > window.innerHeight) continue;
 
-        const p = Math.max(0, Math.min(1, (window.innerHeight - r.top) / (window.innerHeight + r.height)));
-        const y = (0.5 - p) * r.height * 0.18;
+        let p = Math.max(0, Math.min(1, (window.innerHeight - r.top) / (window.innerHeight + r.height)));
+        /* ease at viewport edges: never fully displaced on entry/exit */
+        p = Math.max(0, Math.min(1, 0.5 + (p - 0.5) * 0.8));
+        const y =(0.5 - p) * r.height * 0.12;
 
         const target = img.closest('.gallery-item').matches(':hover') ? 1.03 : 1;
         galleryHover[i] += (target - galleryHover[i]) * 0.12;
